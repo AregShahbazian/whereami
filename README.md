@@ -17,9 +17,16 @@ No map, no history, no saved places, no accounts, no analytics, no ads.
 ./gradlew bundleRelease        # .aab for the Play Console
 ```
 
-`local.properties` needs `sdk.dir=/home/areg/Android/Sdk`.
+`local.properties` needs `sdk.dir=<path to your Android SDK>` (Android Studio
+writes it for you).
 
-Release signing reads `key.properties` (gitignored — see `key.properties.example`).
+Debug builds use `applicationIdSuffix = ".debug"` so they install alongside
+the release build, and they show a fixed made-up location (`DemoLocation.kt`
+in the `debug` source set) so store screenshots never contain a real
+position. The `release` source set returns null there and R8 strips the branch.
+
+Release signing reads `key.properties` (gitignored, along with `*.jks` /
+`*.keystore` — see the template `key.properties.example`).
 Without it, release builds fall back to debug signing so a fresh clone still
 builds.
 
@@ -54,6 +61,14 @@ answer "where am I" is the annoying part.
 | `LocationSource.kt` | Fused provider + geocoder; all platform contact |
 | `Model.kt` | `Fix`, `Place`, `UiState` |
 | `WhereAmIScreen.kt` | Compose UI and theme |
+| `DemoLocation.kt` | Per-build-type: fixed demo fix in `debug/`, `null` in `release/` |
 
-Publishing state, store assets and listing copy live in `~/ai/whereami/`, not
-here.
+Store listing assets and publishing notes are kept outside this repo.
+
+## Status
+
+In closed testing on Google Play.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
